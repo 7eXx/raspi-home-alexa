@@ -1,3 +1,5 @@
 # gitignore for node app
 node_modules
 npm-debug.log
+
+dist

@@ -2,10 +2,18 @@
   "name": "alexa-ts-node",
   "version": "1.0.0",
   "description": "a small nodejs test alexa skill",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:watch": "tsc --watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ext .js,.ts .",
+    "serve": "npm run build && node dist/index.js",
+
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
   },
   "author": "texx",
   "license": "ISC",
