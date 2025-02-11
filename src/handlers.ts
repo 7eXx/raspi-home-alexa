@@ -26,9 +26,10 @@ export const ControlDeviceIntentHandler: RequestHandler = {
 
         // Add your Raspberry Pi automation logic here
         if (action === 'on') {
-            // Code to turn on the device
+            console.log('Turning on the device');
         } else if (action === 'off') {
             // Code to turn off the device
+            console.log('Turning off the device');
         } else {
             speechText = 'Invalid action.';
         }
