@@ -1,5 +1,5 @@
 import { HandlerInput, RequestHandler } from 'ask-sdk-core';
-import { Response } from 'ask-sdk-model';
+import { IntentRequest, Response } from 'ask-sdk-model';
 
 export const LaunchRequestHandler: RequestHandler = {
     canHandle(handlerInput: HandlerInput): boolean {
@@ -20,7 +20,8 @@ export const ControlDeviceIntentHandler: RequestHandler = {
             && handlerInput.requestEnvelope.request.intent.name === 'ControlDeviceIntent';
     },
     handle(handlerInput: HandlerInput): Response {
-        const action = handlerInput.requestEnvelope.request.intent.slots?.action.value;
+        const intentRequest = handlerInput.requestEnvelope.request as IntentRequest;
+        const action = intentRequest.intent.slots?.action.value;
         let speechText = `Turning device ${action}.`;
 
         // Add your Raspberry Pi automation logic here
