@@ -1,0 +1,21 @@
+{
+  "name": "alexa-ts-node",
+  "version": "1.0.0",
+  "description": "a small nodejs test alexa skill",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "texx",
+  "license": "ISC",
+  "dependencies": {
+    "ask-sdk": "^2.14.0",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.1",
+    "typescript": "^5.7.3"
+  }
+}
