@@ -1,12 +1,14 @@
 import { HandlerInput, RequestHandler } from 'ask-sdk-core';
 import { IntentRequest, Response } from 'ask-sdk-model';
 
+const WELCOME_TEXT = 'Benvenuto in Tex Raspi Home. Cosa posso fare per te?';
+
 export const LaunchRequestHandler: RequestHandler = {
     canHandle(handlerInput: HandlerInput): boolean {
         return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
     },
     handle(handlerInput: HandlerInput): Response {
-        const speechText = 'Welcome to Raspberry Pi Automation. What would you like to do?';
+        const speechText = WELCOME_TEXT;
         return handlerInput.responseBuilder
             .speak(speechText)
             .reprompt(speechText)
@@ -22,16 +24,15 @@ export const ControlDeviceIntentHandler: RequestHandler = {
     handle(handlerInput: HandlerInput): Response {
         const intentRequest = handlerInput.requestEnvelope.request as IntentRequest;
         const action = intentRequest.intent.slots?.action.value;
-        let speechText = `Turning device ${action}.`;
+        let speechText = 'Comando non riconosciuto';
 
         // Add your Raspberry Pi automation logic here
-        if (action === 'on') {
-            console.log('Turning on the device');
-        } else if (action === 'off') {
-            // Code to turn off the device
-            console.log('Turning off the device');
-        } else {
-            speechText = 'Invalid action.';
+        if (action === 'on' || action === 'apri') {
+            speechText = 'Sto aprendo il cancello';
+            console.log(speechText);
+        } else if (action === 'off' || action === 'chiudi') {
+            speechText = 'Sto chiudendo il cancello';
+            console.log(speechText);
         }
 
         return handlerInput.responseBuilder
