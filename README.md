@@ -33,6 +33,17 @@ Expose local server to the internet using [ngrok](https://ngrok.com/).
 ngrok http 5000
 ```
 
+## Using in Alexa console
+To alexa console use test tab to make some request:
+```
+open tex's raspi home | <skill invoke name>
+```
+This will open the alexa skill and than you can send some command:
+```
+turn on the device
+```
+
+
 ## Project Structure
 
 ```
