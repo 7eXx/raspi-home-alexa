@@ -8,11 +8,7 @@
     "build:watch": "tsc --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .js,.ts .",
-    "serve": "npm run build && node dist/index.js",
-    "shell": "npm run build && firebase functions:shell",
-    "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "serve": "npm run build && node dist/index.js"
   },
   "author": "texx",
   "license": "ISC",
