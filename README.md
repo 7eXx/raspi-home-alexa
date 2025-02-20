@@ -18,6 +18,12 @@ This project provides a foundation for developing Alexa Skills using TypeScript 
 npm install
 ```
 
+## Configuration
+Copy .env to .env.local and fill the values:
+```
+ALEXA_SKILL_ID=<alexa skill id>
+```
+
 ## Development
 
 ```bash
