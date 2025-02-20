@@ -1,32 +1,25 @@
 
 import express from 'express';
 import bodyParser from 'body-parser';
+import { ExpressAdapter } from 'ask-sdk-express-adapter';
 import { SkillBuilders } from 'ask-sdk-core';
 import { LaunchRequestHandler, ControlDeviceIntentHandler } from './handlers';
 
+const PORT = 3000;
+
 const app = express();
-app.use(bodyParser.json());
 
 const skillBuilder = SkillBuilders.custom();
-
 const skill = skillBuilder
     .addRequestHandlers(
         LaunchRequestHandler,
         ControlDeviceIntentHandler
-    )
-    .create();
+    ).create();
 
-app.post('/', async (req, res) => {
-    try {
-        const response = await skill.invoke(req.body);
-        res.json(response);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error');
-    }
-});
+const adepter = new ExpressAdapter(skill, true, true);
 
-const PORT = 3000;
+app.post('/', adepter.getRequestHandlers());
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

@@ -30,7 +30,7 @@ npm run test      # Run tests
 Expose local server to the internet using [ngrok](https://ngrok.com/).
 
 ```bash
-ngrok http 5000
+ngrok http 3000
 ```
 
 ## Using in Alexa console
