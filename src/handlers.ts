@@ -84,7 +84,7 @@ export const ErrorHandler: RequestHandler = {
 export const GateControlIntentHandler: RequestHandler = {
     canHandle(handlerInput: HandlerInput): boolean {
         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'ControlDeviceIntent';
+            && handlerInput.requestEnvelope.request.intent.name === 'GateControlIntent';
     },
     async handle(handlerInput: HandlerInput): Promise<Response> {
         const intentRequest = handlerInput.requestEnvelope.request as IntentRequest;
