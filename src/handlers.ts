@@ -7,6 +7,7 @@ import { parse } from 'path';
 const BACKEND_URL = 'http://localhost:5000/api';
 const WELCOME_TEXT = 'Benvenuto in Tex Raspi Home. Cosa posso fare per te?';
 const ERROR_TEXT = 'Mi dispiace, non ho capito. Riprova';
+const GOODBYE_TEXT = 'A presto!';
 
 export const LaunchRequestHandler: RequestHandler = {
     canHandle(handlerInput: HandlerInput): boolean {
@@ -21,7 +22,66 @@ export const LaunchRequestHandler: RequestHandler = {
     }
 };
 
-export const ControlDeviceIntentHandler: RequestHandler = {
+export const HelpIntentHandler: RequestHandler = {
+    canHandle(handlerInput: HandlerInput): boolean {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
+    },
+    handle(handlerInput: HandlerInput): Response {
+        const speechText = WELCOME_TEXT;
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(speechText)
+            .getResponse();
+    }
+};
+
+export const StopIntentHandler: RequestHandler = {
+    canHandle(handlerInput: HandlerInput): boolean {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent';
+    },
+    handle(handlerInput: HandlerInput): Response {
+        return handlerInput.responseBuilder
+            .speak(GOODBYE_TEXT)
+            .getResponse();
+    }
+};
+
+export const CancelIntentHandler: RequestHandler = {
+    canHandle(handlerInput: HandlerInput): boolean {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.CancelIntent';
+    },
+    handle(handlerInput: HandlerInput): Response {
+        return handlerInput.responseBuilder
+            .speak(GOODBYE_TEXT)
+            .getResponse();
+    }
+};
+
+export const SessionEndedRequestHandler: RequestHandler = {
+    canHandle(handlerInput: HandlerInput): boolean {
+        return handlerInput.requestEnvelope.request.type === 'SessionEndedRequest';
+    },
+    handle(handlerInput: HandlerInput): Response {
+        return handlerInput.responseBuilder.getResponse();
+    }
+};
+
+export const ErrorHandler: RequestHandler = {
+    canHandle(): boolean {
+        return true;
+    },
+    handle(handlerInput: HandlerInput): Response {
+        console.log(`Error handled: ${handlerInput.requestEnvelope.request.type}`);
+        return handlerInput.responseBuilder
+            .speak(ERROR_TEXT)
+            .getResponse();
+    }
+};
+
+export const GateControlIntentHandler: RequestHandler = {
     canHandle(handlerInput: HandlerInput): boolean {
         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
             && handlerInput.requestEnvelope.request.intent.name === 'ControlDeviceIntent';
