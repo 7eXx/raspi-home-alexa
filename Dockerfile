@@ -18,6 +18,6 @@ WORKDIR /app
 
 COPY --from=build /workdir/dist ./dist
 
-
+ENTRYPOINT [ "node", "dist/index.js" ]
 
 
