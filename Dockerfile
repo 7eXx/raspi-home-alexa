@@ -1,4 +1,4 @@
-FROM node:20-bookworm AS build
+FROM node:20-bookworm-slim AS build
 
 WORKDIR /workdir
 
@@ -12,7 +12,7 @@ RUN npm run lint
 RUN npm run build
 
 # -- STAGE 2: Deploy --
-FROM node:20-bookworm
+FROM node:20-bookworm-slim
 
 WORKDIR /app
 COPY --from=build /workdir/package*.json ./
