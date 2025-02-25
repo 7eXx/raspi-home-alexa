@@ -8,8 +8,8 @@ RUN npm ci
 
 COPY . .
 
-RUN npm lint
-RUN npm build
+RUN npm run lint
+RUN npm run build
 
 # -- STAGE 2: Deploy --
 FROM node:20-bookworm

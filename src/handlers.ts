@@ -1,8 +1,6 @@
 import { HandlerInput, RequestHandler } from 'ask-sdk-core';
 import { IntentRequest, Response } from 'ask-sdk-model';
 import axios from 'axios';
-import { create } from 'domain';
-import { parse } from 'path';
 
 const BACKEND_URL = 'http://localhost:5000/api';
 const WELCOME_TEXT = 'Benvenuto in Tex Raspi Home. Cosa posso fare per te?';
