@@ -4,7 +4,7 @@ WORKDIR /workdir
 
 COPY package*.json ./
 
-RUN npm ci
+RUN npm install
 
 COPY . .
 
@@ -15,9 +15,13 @@ RUN npm run build
 FROM node:20-bookworm
 
 WORKDIR /app
-
+COPY --from=build /workdir/package*.json ./
 COPY --from=build /workdir/dist ./dist
 
-ENTRYPOINT [ "node", "dist/index.js" ]
+RUN npm install --only=production
+
+EXPOSE 3000
+
+CMD [ "node", "dist/index.js" ]
 
 
