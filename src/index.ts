@@ -1,32 +1,41 @@
 
+import path from 'path';
+import * as dotenv from 'dotenv';
 import express from 'express';
-import bodyParser from 'body-parser';
+import { ExpressAdapter } from 'ask-sdk-express-adapter';
 import { SkillBuilders } from 'ask-sdk-core';
-import { LaunchRequestHandler, ControlDeviceIntentHandler } from './handlers';
+import { LaunchRequestHandler, GateControlIntentHandler, HelpIntentHandler, CancelIntentHandler, SessionEndedRequestHandler, ErrorHandler } from './handlers';
+
+dotenv.config({ path: path.resolve(__dirname, '..', '.env.local') });
+// Load environment variables
+dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
+
+const PORT = process.env.SERVICE_PORT || 3000;
+const ALEXA_SKILL_ID = process.env.ALEXA_SKILL_ID;
+
+if (!ALEXA_SKILL_ID) {
+    throw new Error('Alexa skill ID is missing');
+}
 
 const app = express();
-app.use(bodyParser.json());
 
 const skillBuilder = SkillBuilders.custom();
-
 const skill = skillBuilder
+    .withSkillId(ALEXA_SKILL_ID)
     .addRequestHandlers(
+        GateControlIntentHandler,
         LaunchRequestHandler,
-        ControlDeviceIntentHandler
+        HelpIntentHandler,
+        CancelIntentHandler,
+        SessionEndedRequestHandler
     )
+    .addErrorHandlers(ErrorHandler)
     .create();
 
-app.post('/', async (req, res) => {
-    try {
-        const response = await skill.invoke(req.body);
-        res.json(response);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error');
-    }
-});
+const adepter = new ExpressAdapter(skill, true, true);
 
-const PORT = 3000;
+app.post('/', adepter.getRequestHandlers());
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

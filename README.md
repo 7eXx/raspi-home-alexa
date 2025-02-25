@@ -18,6 +18,12 @@ This project provides a foundation for developing Alexa Skills using TypeScript 
 npm install
 ```
 
+## Configuration
+Copy .env to .env.local and fill the values:
+```
+ALEXA_SKILL_ID=<alexa skill id>
+```
+
 ## Development
 
 ```bash
@@ -30,7 +36,7 @@ npm run test      # Run tests
 Expose local server to the internet using [ngrok](https://ngrok.com/).
 
 ```bash
-ngrok http 5000
+ngrok http 3000
 ```
 
 ## Using in Alexa console
