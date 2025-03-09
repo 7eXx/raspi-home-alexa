@@ -1,8 +1,9 @@
 import { HandlerInput, RequestHandler } from 'ask-sdk-core';
 import { IntentRequest, Response } from 'ask-sdk-model';
 import axios from 'axios';
+import environment from './environment'
+import logger from './logger';
 
-const BACKEND_URL = 'http://localhost:5000/api';
 const WELCOME_TEXT = 'Benvenuto in Tex Raspi Home. Cosa posso fare per te?';
 const ERROR_TEXT = 'Mi dispiace, non ho capito. Riprova';
 const GOODBYE_TEXT = 'A presto!';
@@ -72,7 +73,7 @@ export const ErrorHandler: RequestHandler = {
         return true;
     },
     handle(handlerInput: HandlerInput): Response {
-        console.log(`Error handled: ${handlerInput.requestEnvelope.request.type}`);
+        logger.error(`Error handled: ${handlerInput.requestEnvelope.request.type}`);
         return handlerInput.responseBuilder
             .speak(ERROR_TEXT)
             .getResponse();
@@ -93,7 +94,7 @@ export const GateControlIntentHandler: RequestHandler = {
             // call the Raspberry Pi API
             const isOpen = await performGateRequest(action);
             const speechText = createResponseTextFromStatus(isOpen);
-            console.log(speechText);
+            logger.debug(speechText);
 
             return handlerInput.responseBuilder
                 .speak(speechText)
@@ -108,7 +109,7 @@ export const GateControlIntentHandler: RequestHandler = {
 
 async function performGateRequest(action: string): Promise<any> {
     const payload = createGatePayload(action);
-    const result = await axios.put(BACKEND_URL + '/command', payload);
+    const result = await axios.put(environment.RASPI_HOME_BACKEND_URL + '/command', payload);
     
     return parseGateStatus(result.data);
 }

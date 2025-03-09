@@ -1,0 +1,9 @@
+
+services:
+  alexa:
+    container_name: raspi-home-alexa
+    image: registry.texhome.lan/raspi-home-alexa:latest
+    volumes:
+      - ./.env.local:/opt/raspi-alexa/.env.local
+    ports:
+      - 3000:3000
