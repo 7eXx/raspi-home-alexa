@@ -26,7 +26,7 @@ const adepter = new ExpressAdapter(skill, true, true);
 
 app.post('/', adepter.getRequestHandlers());
 
-logger.debug(`RASPI_HOME_BACKEND_URL: ${environment.RASPI_HOME_BACKEND_URL}`);
+logger.info(`RASPI_HOME_BACKEND_URL: ${environment.RASPI_HOME_BACKEND_URL}`);
 
 app.listen(environment.PORT, () => {
     logger.info(`Server is running on port ${environment.PORT}`);
