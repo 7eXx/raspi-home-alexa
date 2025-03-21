@@ -107,6 +107,27 @@ export const GateControlIntentHandler: RequestHandler = {
     }
 };
 
+export const StatusControlIntentHandler: RequestHandler = {
+    canHandle(handlerInput: HandlerInput): boolean {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'StatusControlIntent';
+    },
+    async handle(handlerInput: HandlerInput): Promise<Response> {
+        const intentRequest = handlerInput.requestEnvelope.request as IntentRequest;
+        const object = intentRequest.intent.slots?.object.value;
+
+        // Add your Raspberry Pi automation logic here
+        if (object === 'casa' || object === 'cancello') {
+            // TODO: add api call to retrieve status
+            logger.debug('legglo lo stato di :' + object)
+        }
+
+        return handlerInput.responseBuilder
+                .speak(ERROR_TEXT)
+                .getResponse();
+    }
+};
+
 async function performGateRequest(action: string): Promise<any> {
     const payload = createGatePayload(action);
     const result = await axios.put(environment.RASPI_HOME_BACKEND_URL + '/command', payload);

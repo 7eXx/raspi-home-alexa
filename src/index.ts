@@ -3,7 +3,14 @@
 import express from 'express';
 import { ExpressAdapter } from 'ask-sdk-express-adapter';
 import { SkillBuilders } from 'ask-sdk-core';
-import { LaunchRequestHandler, GateControlIntentHandler, HelpIntentHandler, CancelIntentHandler, SessionEndedRequestHandler, ErrorHandler } from './handlers';
+import { 
+    LaunchRequestHandler, 
+    GateControlIntentHandler, 
+    HelpIntentHandler, 
+    CancelIntentHandler, 
+    SessionEndedRequestHandler, 
+    ErrorHandler 
+} from './handlers';
 import environment from './environment';
 import logger from './logger';
 
