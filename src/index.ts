@@ -5,7 +5,8 @@ import { ExpressAdapter } from 'ask-sdk-express-adapter';
 import { SkillBuilders } from 'ask-sdk-core';
 import { 
     LaunchRequestHandler, 
-    GateControlIntentHandler, 
+    GateControlIntentHandler,
+    StatusControlIntentHandler, 
     HelpIntentHandler, 
     CancelIntentHandler, 
     SessionEndedRequestHandler, 
@@ -21,6 +22,7 @@ const skill = skillBuilder
     .withSkillId(environment.ALEXA_SKILL_ID)
     .addRequestHandlers(
         GateControlIntentHandler,
+        StatusControlIntentHandler,
         LaunchRequestHandler,
         HelpIntentHandler,
         CancelIntentHandler,
