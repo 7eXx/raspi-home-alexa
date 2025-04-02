@@ -119,7 +119,7 @@ export const StatusControlIntentHandler: RequestHandler = {
         // Add your Raspberry Pi automation logic here
         if (object === 'casa' || object === 'cancello') {
             // TODO: add api call to retrieve status
-            logger.debug('legglo lo stato di :' + object)
+            logger.debug('leggo lo stato di :' + object)
         }
 
         return handlerInput.responseBuilder
@@ -127,6 +127,10 @@ export const StatusControlIntentHandler: RequestHandler = {
                 .getResponse();
     }
 };
+
+async function requestState(): Promise<any> {
+    // TODO: perform request to raspi
+}
 
 async function performGateRequest(action: string): Promise<any> {
     const payload = createGatePayload(action);
