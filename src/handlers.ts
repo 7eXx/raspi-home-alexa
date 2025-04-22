@@ -93,7 +93,7 @@ export const GateControlIntentHandler: RequestHandler = {
         if (action === 'apri' || action === 'chiudi') {
             // call the Raspberry Pi API
             const isOpen = await performGateRequest(action);
-            const speechText = createResponseTextFromStatus(isOpen);
+            const speechText = createGateResponseTextFromState(isOpen);
             logger.debug(speechText);
 
             return handlerInput.responseBuilder
@@ -107,11 +107,64 @@ export const GateControlIntentHandler: RequestHandler = {
     }
 };
 
+export const StatusControlIntentHandler: RequestHandler = {
+    canHandle(handlerInput: HandlerInput): boolean {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'StatusControlIntent';
+    },
+    async handle(handlerInput: HandlerInput): Promise<Response> {
+        const intentRequest = handlerInput.requestEnvelope.request as IntentRequest;
+        const object = intentRequest.intent.slots?.object.value;
+
+        if (object === 'cancello') {
+            // call the Raspberry Pi API
+            const isOpen = await getGateState();
+            const speechText = createGateResponseTextFromState(isOpen);
+
+            return handlerInput.responseBuilder
+                .speak(speechText)
+                .getResponse();
+        }
+
+        if (object === 'casa') {
+            // call the Raspberry Pi API
+            const isActive = await getAlarmEcuState();
+            const speechText = createAlarmResponseTextFromState(isActive);
+
+            return handlerInput.responseBuilder
+                .speak(speechText)
+                .getResponse();
+        }
+
+        return handlerInput.responseBuilder
+                .speak(ERROR_TEXT)
+                .getResponse();
+    }
+};
+
+async function getAlarmEcuState(): Promise<any> {
+    const payload = { command: "is_alarm_ecu_active" };
+    const result = await callCommandApi(payload);
+
+    return parseState(result.data);
+}
+
+async function getGateState(): Promise<any> {
+    const payload = { command: "is_gate_open" };
+    const result = await callCommandApi(payload);
+
+    return parseState(result.data);
+}
+
 async function performGateRequest(action: string): Promise<any> {
     const payload = createGatePayload(action);
-    const result = await axios.put(environment.RASPI_HOME_BACKEND_URL + '/command', payload);
+    const result = await callCommandApi(payload);
     
-    return parseGateStatus(result.data);
+    return parseState(result.data);
+}
+
+async function callCommandApi(payload: any): Promise<any> {
+    return axios.put(environment.RASPI_HOME_BACKEND_URL + '/command', payload);
 }
 
 function createGatePayload(action: string): any {
@@ -122,10 +175,14 @@ function createGatePayload(action: string): any {
     }
 }
 
-function parseGateStatus(data: any): boolean {
+function parseState(data: any): boolean {
     return !!data['s'];
 }
 
-function createResponseTextFromStatus(status: boolean): string {
-    return status ? 'Il cancello è aperto' : 'Il cancello è chiuso';
+function createGateResponseTextFromState(state: boolean): string {
+    return state ? 'Il cancello è aperto' : 'Il cancello è chiuso';
+}
+
+function createAlarmResponseTextFromState(state: boolean): string {
+    return state ? 'ECU allarme attivo' : 'ECU allarme non attivo';
 }

@@ -3,7 +3,15 @@
 import express from 'express';
 import { ExpressAdapter } from 'ask-sdk-express-adapter';
 import { SkillBuilders } from 'ask-sdk-core';
-import { LaunchRequestHandler, GateControlIntentHandler, HelpIntentHandler, CancelIntentHandler, SessionEndedRequestHandler, ErrorHandler } from './handlers';
+import { 
+    LaunchRequestHandler, 
+    GateControlIntentHandler,
+    StatusControlIntentHandler, 
+    HelpIntentHandler, 
+    CancelIntentHandler, 
+    SessionEndedRequestHandler, 
+    ErrorHandler 
+} from './handlers';
 import environment from './environment';
 import logger from './logger';
 
@@ -14,6 +22,7 @@ const skill = skillBuilder
     .withSkillId(environment.ALEXA_SKILL_ID)
     .addRequestHandlers(
         GateControlIntentHandler,
+        StatusControlIntentHandler,
         LaunchRequestHandler,
         HelpIntentHandler,
         CancelIntentHandler,
