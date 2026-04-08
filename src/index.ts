@@ -14,6 +14,7 @@ import {
 } from './handlers';
 import environment from './environment';
 import logger from './logger';
+import healthCheckController from './controllers/health-check.controller';
 
 const app = express();
 
@@ -34,6 +35,7 @@ const skill = skillBuilder
 const adepter = new ExpressAdapter(skill, true, true);
 
 app.post('/', adepter.getRequestHandlers());
+app.get('/health-check', healthCheckController.healthCheck);
 
 logger.info(`RASPI_HOME_BACKEND_URL: ${environment.RASPI_HOME_BACKEND_URL}`);
 
